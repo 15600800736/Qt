@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/images">
+        <file alias="block">source/c7a359ee3d6d55fb6e8936cd69224f4a21a4dd47.png</file>
+    </qresource>
+</RCC>
