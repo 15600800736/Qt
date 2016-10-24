@@ -3,6 +3,7 @@
 //Teris_CPP
 #include <QPainter>
 #include <QTransform>
+
 #include "teris.h"
 #include "constants.h"
 #include "block.h"
@@ -23,7 +24,7 @@ Teris::Teris(qreal x, qreal y, TerisType type, int speed, GameMap* map):
         _block<<block;
         addToGroup(block);
     }
-
+    setParentItem(map);
     setPos(x,y);
     create();
     this->setGraphicsEffect(_colorEffect);
@@ -104,8 +105,7 @@ QPainterPath Teris::shape()const
 void Teris::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
     painter->save();
-    painter->setRenderHint(QPainter::Antialiasing);
-    painter->fillPath(shape(),Qt::red);
+    painter->fillPath(shape(),QBrush());
     painter->restore();
 }
 void Teris::move()
@@ -167,7 +167,7 @@ void Teris::sendTerisToMap()
 {
     foreach(Block* block,_block)
     {
-        QPointF posInScene = block->mapToScene(block->pos());
+        QPointF posInScene = block->scenePos();
         _map->receiveBlock(posInScene);
     }
 }

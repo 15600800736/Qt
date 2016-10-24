@@ -1,12 +1,12 @@
 #ifndef Teris_H
 #define Teris_H
 
-
 #include <QGraphicsItemGroup>
 #include <QList>
-#include "constants.h"
 #include <QGraphicsColorizeEffect>
 #include <QTransform>
+
+#include "constants.h"
 namespace Teris
 {
 class Controller;

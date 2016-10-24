@@ -1,7 +1,9 @@
 
-#include "bar.h"
+//bar.cpp
 #include <QPainter>
 #include <QBrush>
+
+#include "bar.h"
 namespace Teris
 {
 Bar::Bar(QColor color):_color(color)

@@ -1,10 +1,11 @@
 
 //block.cpp
 
-#include "block.h"
-#include "constants.h"
 #include <QPainter>
 #include <QPixmap>
+
+#include "block.h"
+#include "constants.h"
 namespace Teris
 {
 Block::Block()
@@ -19,9 +20,9 @@ Block::Block(qreal x, qreal y)
 {
     setPos(x,y);
 }
-Block::Block(const Block &other)
+Block::Block(Block &other)
 {
-    other.setPos(pos());
+    other.setPos(scenePos());
 }
 
 QRectF Block::boundingRect()const

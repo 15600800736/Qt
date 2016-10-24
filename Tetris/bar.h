@@ -1,11 +1,12 @@
 #ifndef BOUNDARY_H
 #define BOUNDARY_H
 
-#include "constants.h"
 #include <QGraphicsItem>
 #include <QRectF>
 #include <QPainterPath>
 #include <QColor>
+
+#include "constants.h"
 namespace Teris
 {
 class Bar:public QGraphicsItem

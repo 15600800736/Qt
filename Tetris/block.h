@@ -1,5 +1,6 @@
 #ifndef BLOCK_H
 #define BLOCK_H
+
 #include <QGraphicsItem>
 #include <QRectF>
 #include <QPainterPath>
@@ -14,7 +15,7 @@ public:
     Block();
     Block(qreal x,qreal y);
     Block(QPointF& pos);
-    Block(const Block& other);
+    Block(Block& other);
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
     QPainterPath shape()const;
     QRectF boundingRect()const;
