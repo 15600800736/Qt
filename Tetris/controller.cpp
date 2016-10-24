@@ -6,8 +6,9 @@
 
 namespace Teris
 {
-Controller::Controller(QGraphicsScene* scene, QObject *parent):
+Controller::Controller(QGraphicsScene* scene, Teris* teris, QObject *parent):
     QObject(parent),
+    _teris(teris),
     _scene(scene)
 {
 
@@ -46,7 +47,6 @@ void Controller::init()
     default:
         break;
     }
-    _teris = new Teris(mapWidth/2,0,type,100);
 
 }
 }

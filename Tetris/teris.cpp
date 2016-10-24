@@ -5,18 +5,17 @@
 #include <QTransform>
 #include "teris.h"
 #include "constants.h"
-
 #include "block.h"
-
+#include "map.h"
 namespace  Teris
 {
-Teris::Teris(qreal x, qreal y, TerisType type, int speed):
+Teris::Teris(qreal x, qreal y, TerisType type, int speed, GameMap* map):
     _type(type),
     _currentAngle(0),
-    _pos(x,y),
     _speed(speed),
     _counter(0),
-    _colorEffect(new QGraphicsColorizeEffect())
+    _colorEffect(new QGraphicsColorizeEffect()),
+    _map(map)
 {
     for(int i = 0;i<4;i++)
     {
@@ -141,10 +140,6 @@ void Teris::move()
         break;
     }
 }
-QPointF Teris::getPos()const
-{
-    return _pos;
-}
 void Teris::advance(int phase)
 {
     if(!phase)return;
@@ -168,5 +163,14 @@ Teris::~Teris()
     }
     delete _colorEffect;
 }
+void Teris::sendTerisToMap()
+{
+    foreach(Block* block,_block)
+    {
+        QPointF posInScene = block->mapToScene(block->pos());
+        _map->receiveBlock(posInScene);
+    }
+}
+
 }
 

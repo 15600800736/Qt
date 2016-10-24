@@ -12,7 +12,7 @@ class Controller:public QObject
 {
     Q_OBJECT
 public:
-    Controller(QGraphicsScene* scene,QObject* parent = 0);
+    Controller(QGraphicsScene* scene,Teris* teris,QObject* parent = 0);
 protected:
    virtual void init();
 private:

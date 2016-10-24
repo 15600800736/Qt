@@ -7,6 +7,23 @@
 #include <QPixmap>
 namespace Teris
 {
+Block::Block()
+{
+
+}
+Block::Block(QPointF& pos)
+{
+    setPos(pos);
+}
+Block::Block(qreal x, qreal y)
+{
+    setPos(x,y);
+}
+Block::Block(const Block &other)
+{
+    other.setPos(pos());
+}
+
 QRectF Block::boundingRect()const
 {
     QRectF rect(-blockWidth/2,-blockWidth/2,blockWidth,blockWidth);

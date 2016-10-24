@@ -11,7 +11,7 @@ namespace Teris
 {
 class Controller;
 class Block;
-
+class GameMap;
 class Teris : public QGraphicsItemGroup
 {
 public:
@@ -35,7 +35,7 @@ public:
         O,
     }TerisType;
     typedef int angle;
-    Teris(qreal x,qreal y,TerisType type,int speed);
+    Teris(qreal x,qreal y,TerisType type,int speed,GameMap* map);
     QRectF boundingRect()const;
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
     QPainterPath shape()const;
@@ -46,16 +46,17 @@ protected:
     void advance(int phase);
     void handleCollision();
     void handleDeleteLine();
-    QPointF getPos()const;
+    void sendTerisToMap();
+
 private:
     int _speed;
     int _counter;
-    QPointF _pos;
     TerisType _type;
     QGraphicsColorizeEffect* _colorEffect;
     QList<Block*> _block;
     angle _currentAngle;
     Action _action;
+    GameMap* _map;
 //    Controller* _controller;
 };
 }
