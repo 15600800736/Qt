@@ -179,6 +179,7 @@ void Teris::advance(int phase)
     {
         sendBlockToMap();
     }
+    _action = FALL;
     update(_map->boundingRect());
 }
 void Teris::sendBlockToMap()
@@ -235,6 +236,10 @@ Teris::~Teris()
     }
     _block.clear();
     delete _colorEffect;
+}
+void Teris::setAction(Action action)
+{
+    _action = action;
 }
 }
 

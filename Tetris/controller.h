@@ -17,7 +17,7 @@ public:
     Controller(QObject* parent = 0);
     virtual ~Controller();
     virtual void startGame();
-    void eventFilter(QObject *watched, QEvent *event);
+    bool eventFilter(QObject *watched, QEvent *event);
 private:
     GameMap* _map;
     Teris* _teris;

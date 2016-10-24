@@ -17,6 +17,7 @@ public:
 
     typedef enum
     {
+        FALL,
         LEFT,
         RIGHT,
         DOWN,
@@ -41,6 +42,8 @@ public:
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
     void reset();
     void setType(TerisType type);
+    void setAction(Action action);
+
     ~Teris();
 protected:
     bool move();

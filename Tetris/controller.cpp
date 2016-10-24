@@ -15,6 +15,7 @@ Controller::Controller(QObject *parent):
     _scene(new QGraphicsScene(this)),
     _view(new QGraphicsView(_scene))
 {
+    _scene->installEventFilter(this);
     _view->setScene(_scene);
     _view->resize(mapWidth,mapLength);
     _view->show();
@@ -22,7 +23,7 @@ Controller::Controller(QObject *parent):
 
 void Controller::startGame()
 {
-    _timer.start(1000/33);
+    _timer.start(5);
     connect(&_timer,SIGNAL(timeout()),_scene,SLOT(advance()));
     qsrand((unsigned)time(0));
     int itype = qrand() % 7;
@@ -61,16 +62,30 @@ void Controller::startGame()
     _map->setZValue(0);
     _scene->setBackgroundBrush(Qt::black);
 }
-void Controller::eventFilter(QObject *watched, QEvent *event)
+bool Controller::eventFilter(QObject *watched, QEvent *event)
 {
-    update(_map->boundingRect());
-    if(event == QEvent::KeyPress)
+    _map->update(_map->boundingRect());
+    if(event->type() == QEvent::KeyPress)
     {
         QKeyEvent* keyEvent = static_cast<QKeyEvent*>(event);
-        if(keyEvent->key() == Qt::Key_Left)
+        switch(keyEvent->key())
         {
-
+        case Qt::Key_Left:
+            _teris->setAction(Teris::LEFT);
+            break;
+        case Qt::Key_Right:
+            _teris->setAction(Teris::RIGHT);
+            break;
+        case Qt::Key_Enter:
+            _teris->setAction(Teris::TURN);
+            break;
+        case Qt::Key_Down:
+            _teris->setAction(Teris::DOWN);
+            break;
+        default:
+            break;
         }
+        return true;
     }
     else
     {
