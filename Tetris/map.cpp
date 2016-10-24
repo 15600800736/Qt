@@ -31,7 +31,7 @@ void GameMap::receiveBlock(QPointF blockPosInScene)
     addToGroup(block);
     if(_matrix[y]->size() == mapWidth)
     {
-//        deleteLine(y);
+        deleteLine(y);
     }
     update(boundingRect());
 }
@@ -73,8 +73,6 @@ void GameMap::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, Q
 {
     painter->save();
     painter->drawPixmap(-0.5*mapWidth,-0.5*mapLength,mapWidth,mapLength,QPixmap(":images/gameBackground"));
-    painter->setBrush(Qt::red);
-    painter->drawEllipse(0,0,10,10);
     painter->restore();
     painter->save();
     painter->fillPath(shape(),QBrush());

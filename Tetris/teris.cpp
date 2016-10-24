@@ -4,14 +4,16 @@
 #include <QPainter>
 #include <QTransform>
 
-#include "teris.h"
-#include "constants.h"
+
 #include "block.h"
+#include "constants.h"
 #include "map.h"
+#include "teris.h"
+#include "time.h"
 namespace  Teris
 {
-Teris::Teris(qreal x, qreal y, TerisType type, int speed, GameMap* map):
-    _type(type),
+Teris::Teris(qreal x, qreal y,int speed, GameMap* map):
+    _startPos(x,y),
     _currentAngle(0),
     _speed(speed),
     _counter(0),
@@ -26,7 +28,7 @@ Teris::Teris(qreal x, qreal y, TerisType type, int speed, GameMap* map):
     }
     setParentItem(map);
     setPos(x,y);
-    create();
+    reset();
     this->setGraphicsEffect(_colorEffect);
 }
 void Teris::create()
@@ -108,8 +110,23 @@ void Teris::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWi
     painter->fillPath(shape(),QBrush());
     painter->restore();
 }
-void Teris::move()
+bool Teris::Fall()
 {
+    QPointF oldPos= this->pos();
+    moveBy(0,10);
+    QList<QGraphicsItem*> colliding= collidingItems();
+    if(!colliding.empty())
+    {
+        setPos(oldPos);
+        _action = STOP;
+        return false;
+    }
+    return true;
+}
+bool Teris::move()
+{
+    QPointF oldPos = pos();
+    QTransform oldTransform = transform();
     switch(_action)
     {
     case LEFT:
@@ -139,31 +156,32 @@ void Teris::move()
     default:
         break;
     }
+    QList<QGraphicsItem*> colliding = collidingItems();
+    if(!colliding.empty())
+    {
+        setPos(oldPos);
+        setTransform(oldTransform);
+        return false;
+    }
+    return true;
 }
 void Teris::advance(int phase)
 {
     if(!phase)return;
     if(++_counter < _speed)return;
     _counter = 0;
+    Fall();
     if(_action != STOP)
     {
         move();
-        handleCollision();
     }
-}
-void Teris::handleCollision()
-{
-    QList<QGraphicsItem*> collisionItems = collidingItems();
-}
-Teris::~Teris()
-{
-    foreach(Block* block,_block)
+    else
     {
-        delete block;
+        sendBlockToMap();
     }
-    delete _colorEffect;
+    update(_map->boundingRect());
 }
-void Teris::sendTerisToMap()
+void Teris::sendBlockToMap()
 {
     foreach(Block* block,_block)
     {
@@ -171,6 +189,52 @@ void Teris::sendTerisToMap()
         _map->receiveBlock(posInScene);
     }
 }
-
+void Teris::reset()
+{
+    setPos(_startPos);
+    resetTransform();
+    qsrand((unsigned int)time(0));
+    int type = qrand() % 7;
+    switch(type)
+    {
+    case 0:
+        _type = I;
+        break;
+    case 1:
+        _type = L;
+        break;
+    case 2:
+        _type =RL;
+        break;
+    case 3:
+        _type = Z;
+        break;
+    case 4:
+        _type = RZ;
+        break;
+    case 5:
+        _type = T;
+        break;
+    case 6:
+        _type = O;
+        break;
+    default:
+        break;
+    }
+    create();
+}
+void Teris::setType(TerisType type)
+{
+    _type = type;
+}
+Teris::~Teris()
+{
+    foreach(Block* block,_block)
+    {
+        delete block;
+    }
+    _block.clear();
+    delete _colorEffect;
+}
 }
 

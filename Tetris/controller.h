@@ -5,19 +5,24 @@
 #include <QTimer>
 #include <QVector>
 #include <QGraphicsScene>
+#include <QGraphicsView>
 namespace Teris
 {
 class Teris;
+class GameMap;
 class Controller:public QObject
 {
     Q_OBJECT
 public:
-    Controller(QGraphicsScene* scene,Teris* teris,QObject* parent = 0);
-protected:
-   virtual void init();
+    Controller(QObject* parent = 0);
+    virtual ~Controller();
+    virtual void startGame();
+    void eventFilter(QObject *watched, QEvent *event);
 private:
+    GameMap* _map;
     Teris* _teris;
     QGraphicsScene* _scene;
+    QGraphicsView* _view;
     QTimer _timer;
 };
 }

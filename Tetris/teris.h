@@ -4,7 +4,6 @@
 #include <QGraphicsItemGroup>
 #include <QList>
 #include <QGraphicsColorizeEffect>
-#include <QTransform>
 
 #include "constants.h"
 namespace Teris
@@ -35,25 +34,27 @@ public:
         O,
     }TerisType;
     typedef int angle;
-    Teris(qreal x,qreal y,TerisType type,int speed,GameMap* map);
+
+    Teris(qreal x,qreal y,int speed,GameMap* map);
     QRectF boundingRect()const;
-    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
     QPainterPath shape()const;
+    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
+    void reset();
+    void setType(TerisType type);
     ~Teris();
 protected:
-    void move();
+    bool move();
+    bool Fall();
     void create();
     void advance(int phase);
-    void handleCollision();
-    void handleDeleteLine();
-    void sendTerisToMap();
-
+    void sendBlockToMap();
 private:
     int _speed;
     int _counter;
     TerisType _type;
     QGraphicsColorizeEffect* _colorEffect;
     QList<Block*> _block;
+    QPointF _startPos;
     angle _currentAngle;
     Action _action;
     GameMap* _map;
