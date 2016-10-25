@@ -3,7 +3,7 @@
 //Teris_CPP
 #include <QPainter>
 #include <QTransform>
-
+#include <QDebug>
 
 #include "block.h"
 #include "constants.h"
@@ -113,7 +113,7 @@ void Teris::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWi
 bool Teris::Fall()
 {
     QPointF oldPos= this->pos();
-    moveBy(0,10);
+    moveBy(0,blockWidth);
     QList<QGraphicsItem*> colliding= collidingItems();
     if(!colliding.empty())
     {
@@ -121,6 +121,7 @@ bool Teris::Fall()
         _action = STOP;
         return false;
     }
+    qDebug()<<_map->shape();
     return true;
 }
 bool Teris::move()
@@ -174,12 +175,13 @@ void Teris::advance(int phase)
     if(_action != STOP)
     {
         move();
+         _action = FALL;
     }
     else
     {
         sendBlockToMap();
+        reset();
     }
-    _action = FALL;
     update(_map->boundingRect());
 }
 void Teris::sendBlockToMap()
@@ -195,6 +197,7 @@ void Teris::reset()
     setPos(_startPos);
     resetTransform();
     qsrand((unsigned int)time(0));
+    _action = FALL;
     int type = qrand() % 7;
     switch(type)
     {

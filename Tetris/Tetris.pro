@@ -17,7 +17,6 @@ SOURCES += main.cpp\
     controller.cpp \
     teris.cpp \
     block.cpp \
-    bar.cpp \
     map.cpp
 
 HEADERS  += mainwindow.h \
@@ -25,8 +24,8 @@ HEADERS  += mainwindow.h \
     controller.h \
     teris.h \
     block.h \
-    bar.h \
-    map.h
+    map.h \
+    testteris.h
 
 FORMS    += mainwindow.ui
 

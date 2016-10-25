@@ -23,6 +23,11 @@ Controller::Controller(QObject *parent):
 
 void Controller::startGame()
 {
+    //tmp
+    Teris* teris_tmp = new Teris(0,mapLength,50,_map);
+    teris_tmp->setAction(Teris::STOP);
+    _scene->addItem(teris_tmp);
+    //tmp
     _timer.start(5);
     connect(&_timer,SIGNAL(timeout()),_scene,SLOT(advance()));
     qsrand((unsigned)time(0));
@@ -81,6 +86,9 @@ bool Controller::eventFilter(QObject *watched, QEvent *event)
             break;
         case Qt::Key_Down:
             _teris->setAction(Teris::DOWN);
+            break;
+        case Qt::Key_A:
+            _teris->setAction(Teris::STOP);
             break;
         default:
             break;

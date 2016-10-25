@@ -52,16 +52,17 @@ protected:
     void advance(int phase);
     void sendBlockToMap();
 private:
-    int _speed;
-    int _counter;
+
     TerisType _type;
-    QGraphicsColorizeEffect* _colorEffect;
+
     QList<Block*> _block;
     QPointF _startPos;
     angle _currentAngle;
+    int _speed;
+    int _counter;
     Action _action;
+    QGraphicsColorizeEffect* _colorEffect;
     GameMap* _map;
-//    Controller* _controller;
 };
 }
 #endif // Teris_H

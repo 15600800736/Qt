@@ -3,6 +3,7 @@
 #include <QPainter>
 #include <QBrush>
 #include <QPixmap>
+#include <QDebug>
 
 #include "map.h"
 #include "block.h"
@@ -26,12 +27,13 @@ void GameMap::receiveBlock(QPointF blockPosInScene)
 {
     QPointF blockPos = mapFromScene(blockPosInScene);
     Block* block = new Block(blockPos);
-    int y = block->y();
-    _matrix[y]->insert(block);
+    qreal y = block->y();
+    int index = yToIndex(y);
+    _matrix[index]->insert(block);
     addToGroup(block);
-    if(_matrix[y]->size() == mapWidth)
+    if(_matrix[index]->size() == mapWidth)
     {
-        deleteLine(y);
+        deleteLine(index);
     }
     update(boundingRect());
 }
