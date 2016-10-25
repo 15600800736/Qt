@@ -14,7 +14,7 @@ class Block:public QGraphicsItem
 public:
     Block();
     Block(qreal x,qreal y);
-    Block(QPointF& pos);
+    Block(QPointF pos);
     Block(Block& other);
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
     QPainterPath shape()const;

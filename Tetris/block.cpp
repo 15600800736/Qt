@@ -12,7 +12,7 @@ Block::Block()
 {
 
 }
-Block::Block(QPointF& pos)
+Block::Block(QPointF pos)
 {
     setPos(pos);
 }
@@ -33,9 +33,8 @@ QRectF Block::boundingRect()const
 QPainterPath Block::shape()const
 {
     QPainterPath path;
-    path.addRect(-blockWidth/2,-blockWidth/2,blockWidth,blockWidth);
+    path.addRect(boundingRect());
     return path;
-
 }
 void Block::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {

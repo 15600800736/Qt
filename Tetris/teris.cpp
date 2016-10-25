@@ -26,7 +26,6 @@ Teris::Teris(qreal x, qreal y,int speed, GameMap* map):
         _block<<block;
         addToGroup(block);
     }
-    setParentItem(map);
     setPos(x,y);
     reset();
     this->setGraphicsEffect(_colorEffect);
@@ -100,34 +99,52 @@ QPainterPath Teris::shape()const
     Block*block;
     foreach(block,_block)
     {
-        path.addPath(block->shape());
+        QPointF topLeft(block->x()-0.5*blockWidth,block->y() - 0.5*blockWidth);
+        QPointF bottomRight(block->x()+0.5*blockWidth,block->y() + 0.5*blockWidth);
+        path.addRect(QRectF(topLeft,bottomRight));
     }
     return path;
+
 }
 void Teris::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
-    painter->save();
-    painter->fillPath(shape(),QBrush());
-    painter->restore();
+
 }
-bool Teris::Fall()
+bool Teris::isColliding()
+{
+    QList<QGraphicsItem*> child = childItems();
+    foreach(QGraphicsItem* one,child)
+    {
+        QList<QGraphicsItem*> colliding = one->collidingItems();
+        if(colliding.size() > 1)
+        {
+            return true;
+        }
+        return false;
+    }
+}
+
+bool Teris::fall()
 {
     QPointF oldPos= this->pos();
     moveBy(0,blockWidth);
-    QList<QGraphicsItem*> colliding= collidingItems();
-    if(!colliding.empty())
+    QList<QGraphicsItem*> child = childItems();
+    foreach(QGraphicsItem* one,child)
     {
-        setPos(oldPos);
-        _action = STOP;
-        return false;
+        QList<QGraphicsItem*> colliding = one->collidingItems();
+        if(colliding.size() > 1)
+        {
+            setPos(oldPos);
+            _action = STOP;
+            update(_map->sceneRect());
+            return false;
+        }
     }
-    qDebug()<<_map->shape();
     return true;
 }
 bool Teris::move()
 {
     QPointF oldPos = pos();
-    QTransform oldTransform = transform();
     switch(_action)
     {
     case LEFT:
@@ -142,6 +159,7 @@ bool Teris::move()
     }
     case DOWN:
     {
+        _counter = _speed -10;
         break;
     }
     case TURN:
@@ -157,12 +175,16 @@ bool Teris::move()
     default:
         break;
     }
-    QList<QGraphicsItem*> colliding = collidingItems();
-    if(!colliding.empty())
+    QList<QGraphicsItem*> child = childItems();
+    foreach(QGraphicsItem* one,child)
     {
+        QList<QGraphicsItem*> colliding = one->collidingItems();
+        if(colliding.size() > 1)
+        {
         setPos(oldPos);
-        setTransform(oldTransform);
+        update(_map->sceneRect());
         return false;
+        }
     }
     return true;
 }
@@ -171,10 +193,10 @@ void Teris::advance(int phase)
     if(!phase)return;
     if(++_counter < _speed)return;
     _counter = 0;
-    Fall();
+    move();
+    fall();
     if(_action != STOP)
     {
-        move();
          _action = FALL;
     }
     else
@@ -182,14 +204,13 @@ void Teris::advance(int phase)
         sendBlockToMap();
         reset();
     }
-    update(_map->boundingRect());
 }
 void Teris::sendBlockToMap()
 {
     foreach(Block* block,_block)
     {
-        QPointF posInScene = block->scenePos();
-        _map->receiveBlock(posInScene);
+        Block *oldBlock = new Block(block->scenePos());
+        _map->addItem(oldBlock);
     }
 }
 void Teris::reset()

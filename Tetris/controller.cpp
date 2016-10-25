@@ -10,26 +10,20 @@ namespace Teris
 {
 Controller::Controller(QObject *parent):
     QObject(parent),
-    _map(new GameMap()),
-    _teris(new Teris(0,-0.5*mapLength+2*blockWidth,50,_map)),
-    _scene(new QGraphicsScene(this)),
-    _view(new QGraphicsView(_scene))
+     _map(new GameMap()),
+    _view(new QGraphicsView(_map)),
+    _teris(new Teris(0,-0.5*mapLength+2*blockWidth,50,_map))
 {
-    _scene->installEventFilter(this);
-    _view->setScene(_scene);
-    _view->resize(mapWidth,mapLength);
+    _map->installEventFilter(this);
+    _view->setScene(_map);
+    _view->resize(4*mapWidth,2*mapLength);
     _view->show();
 }
 
 void Controller::startGame()
 {
-    //tmp
-    Teris* teris_tmp = new Teris(0,mapLength,50,_map);
-    teris_tmp->setAction(Teris::STOP);
-    _scene->addItem(teris_tmp);
-    //tmp
     _timer.start(5);
-    connect(&_timer,SIGNAL(timeout()),_scene,SLOT(advance()));
+    connect(&_timer,SIGNAL(timeout()),_map,SLOT(advance()));
     qsrand((unsigned)time(0));
     int itype = qrand() % 7;
     Teris::TerisType type;
@@ -61,15 +55,12 @@ void Controller::startGame()
     }
     _teris->setType(type);
     _teris->reset();
-    _scene->addItem(_teris);
-    _scene->addItem(_map);
-    _teris->setZValue(1);
-    _map->setZValue(0);
-    _scene->setBackgroundBrush(Qt::black);
+    _map->addItem(_teris);
+    _map->setBackgroundBrush(Qt::black);
 }
 bool Controller::eventFilter(QObject *watched, QEvent *event)
 {
-    _map->update(_map->boundingRect());
+    _map->update(_map->sceneRect());
     if(event->type() == QEvent::KeyPress)
     {
         QKeyEvent* keyEvent = static_cast<QKeyEvent*>(event);
@@ -81,7 +72,7 @@ bool Controller::eventFilter(QObject *watched, QEvent *event)
         case Qt::Key_Right:
             _teris->setAction(Teris::RIGHT);
             break;
-        case Qt::Key_Enter:
+        case Qt::Key_Up:
             _teris->setAction(Teris::TURN);
             break;
         case Qt::Key_Down:
@@ -104,7 +95,6 @@ bool Controller::eventFilter(QObject *watched, QEvent *event)
 Controller::~Controller()
 {
     delete _teris;
-    delete _scene;
     delete _view;
     delete _map;
 }

@@ -43,14 +43,14 @@ public:
     void reset();
     void setType(TerisType type);
     void setAction(Action action);
-
     ~Teris();
 protected:
     bool move();
-    bool Fall();
+    bool fall();
     void create();
     void advance(int phase);
     void sendBlockToMap();
+    bool isColliding();
 private:
 
     TerisType _type;

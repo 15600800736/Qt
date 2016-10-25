@@ -21,7 +21,6 @@ public:
 private:
     GameMap* _map;
     Teris* _teris;
-    QGraphicsScene* _scene;
     QGraphicsView* _view;
     QTimer _timer;
 };
