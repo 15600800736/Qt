@@ -28,7 +28,6 @@ Teris::Teris(qreal x, qreal y, int speed, GameMap* map, QObject* parent):
         addToGroup(block);
     }
     setPos(x,y);
-    reset();
     this->setGraphicsEffect(_colorEffect);
 }
 void Teris::create()
@@ -185,20 +184,23 @@ void Teris::move()
 }
 void Teris::advance(int phase)
 {
-    if(!phase)return;
-    if(++_counter < _speed)return;
-    _counter = 0;
-    move();
-    fall();
-    if(_action != STOP)
+    if(_action != NEXT)
     {
-         _action = FALL;
-    }
-    else
-    {
-        QPair<qreal,qreal> minMax = sendBlockToMap();
-        reset();
-        _map->deleteLine(minMax);
+        if(!phase)return;
+        if(++_counter < _speed)return;
+        _counter = 0;
+        move();
+        fall();
+        if(_action != STOP)
+        {
+             _action = FALL;
+        }
+        else
+        {
+            QPair<qreal,qreal> minMax = sendBlockToMap();
+            reset(_nextType);
+            _map->deleteLine(minMax);
+        }
     }
 }
 QPair<qreal, qreal> Teris::sendBlockToMap()
@@ -215,13 +217,13 @@ QPair<qreal, qreal> Teris::sendBlockToMap()
     }
     return minMax;
 }
-void Teris::reset()
+void Teris::reset(int type)
 {
     setPos(_startPos);
     setRotation(0);
     qsrand((unsigned int)time(0));
     _action = FALL;
-    int type = qrand() % 7;
+    _nextType = qrand() % 7;
     switch(type)
     {
     case 0:
@@ -249,6 +251,7 @@ void Teris::reset()
         break;
     }
     create();
+     _map->createNextTeris(_nextType);
     if(isColliding())
     {
         emit gameOver();

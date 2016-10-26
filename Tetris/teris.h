@@ -21,6 +21,7 @@ public:
 
     typedef enum
     {
+        NEXT,
         FALL,
         LEFT,
         RIGHT,
@@ -44,16 +45,16 @@ public:
     QRectF boundingRect()const;
     QPainterPath shape()const;
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
-    void reset();
+    void reset(int type);
     void setType(TerisType type);
     void setAction(Action action);
+    void create();
     ~Teris();
 signals:
     void gameOver();
 protected:
     void move();
     void fall();
-    void create();
     void advance(int phase);
     QPair<qreal,qreal> sendBlockToMap();
     bool isColliding();
@@ -68,6 +69,7 @@ private:
     Action _action;
     QGraphicsColorizeEffect* _colorEffect;
     GameMap* _map;
+    int _nextType;
 };
 }
 #endif // Teris_H

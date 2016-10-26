@@ -6,15 +6,18 @@
 #include <QDebug>
 #include <QGraphicsItemGroup>
 #include <QGraphicsOpacityEffect>
+#include <QPixmap>
 
 #include "map.h"
-#include "block.h"
+#include "teris.h"
 namespace Teris
 {
-GameMap::GameMap():QGraphicsScene()
+GameMap::GameMap():QGraphicsScene(),_nextTeris(new Teris(mapWidth,-0.2*mapLength,0,this))
 {
+    _nextTeris->setAction(Teris::NEXT);
     init();
-    setSceneRect(-mapWidth,-mapLength,4*mapWidth,2*mapLength);
+    setSceneRect(-mapWidth,-mapLength,6*mapWidth,6*3/4*mapWidth);
+    addItem(_nextTeris);
 }
 void GameMap::init()
 {
@@ -68,5 +71,41 @@ void GameMap::removeAll()
         removeItem(one);
         delete one;
     }
+}
+void GameMap::createNextTeris(int type)
+{
+    Teris::TerisType nextType;
+    switch(type)
+    {
+    case 0:
+        nextType = Teris::I;
+        break;
+    case 1:
+        nextType = Teris::L;
+        break;
+    case 2:
+        nextType = Teris::RL;
+        break;
+    case 3:
+        nextType = Teris::Z;
+        break;
+    case 4:
+        nextType = Teris::RZ;
+        break;
+    case 5:
+        nextType = Teris::T;
+        break;
+    case 6:
+        nextType = Teris::O;
+        break;
+    default:
+        break;
+    }
+    _nextTeris->setType(nextType);
+    _nextTeris->create();
+}
+void GameMap::drawBackground(QPainter *painter, const QRectF &rect)
+{
+    painter->drawPixmap(-mapWidth,-mapLength,6*mapWidth,6*3/4*mapWidth,QPixmap(":images/background"));
 }
 }

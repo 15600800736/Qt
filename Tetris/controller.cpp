@@ -17,7 +17,7 @@ Controller::Controller(QObject *parent):
 {
     _map->installEventFilter(this);
     _view->setScene(_map);
-    _view->resize(4*mapWidth,2*mapLength);
+    _view->resize(_map->sceneRect().width(),_map->sceneRect().height());
     _view->show();
 }
 
@@ -26,7 +26,8 @@ void Controller::startGame()
     _timer.start(1);
     connect(&_timer,SIGNAL(timeout()),_map,SLOT(advance()));
     connect(_teris,SIGNAL(gameOver()),this,SLOT(gameOver()));
-    _teris->reset();
+    qsrand((unsigned int)time(0));
+    _teris->reset(qrand()&7);
     _map->addItem(_teris);
     _map->setBackgroundBrush(Qt::black);
 }
@@ -49,9 +50,6 @@ bool Controller::eventFilter(QObject *watched, QEvent *event)
             break;
         case Qt::Key_Down:
             _teris->setAction(Teris::DOWN);
-            break;
-        case Qt::Key_A:
-            _teris->setAction(Teris::STOP);
             break;
         default:
             break;

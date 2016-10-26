@@ -21,11 +21,13 @@ public:
     void deleteLine(QPair<qreal,qreal> minMax);
     void clearBlock(QList<QGraphicsItem*> block);
     void removeAll();
+    void createNextTeris(int type);
+    void drawBackground(QPainter *painter, const QRectF &rect);
 protected:
     void init();
 private:
     QList<QGraphicsLineItem*> _boundary;
-    QList<QGraphicsEllipseItem*> _corner;
+    Teris* _nextTeris;
 };
 }
 #endif // MAP_H
