@@ -6,17 +6,25 @@
 #include <QRectF>
 #include <QPainterPath>
 #include <QGraphicsScene>
+#include <QGraphicsLineItem>
+#include <QList>
+#include <QPair>
 
 #include "constants.h"
 namespace Teris
 {
-class Block;
+class Teris;
 class GameMap:public QGraphicsScene
 {
 public:
     GameMap();
-    void receiveBlock(Block block);
-    void deleteLine(int y);
+    void deleteLine(QPair<qreal,qreal> minMax);
+    void clearBlock(QList<QGraphicsItem*> block);
+protected:
+    void init();
+private:
+    QList<QGraphicsLineItem*> _boundary;
+    QList<QGraphicsEllipseItem*> _corner;
 };
 }
 #endif // MAP_H

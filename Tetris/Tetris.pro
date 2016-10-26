@@ -17,7 +17,8 @@ SOURCES += main.cpp\
     controller.cpp \
     teris.cpp \
     block.cpp \
-    map.cpp
+    map.cpp \
+    boundary.cpp
 
 HEADERS  += mainwindow.h \
     constants.h \
@@ -25,7 +26,7 @@ HEADERS  += mainwindow.h \
     teris.h \
     block.h \
     map.h \
-    testteris.h
+    boundary.h
 
 FORMS    += mainwindow.ui
 

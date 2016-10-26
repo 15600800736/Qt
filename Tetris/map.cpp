@@ -12,11 +12,51 @@ namespace Teris
 {
 GameMap::GameMap():QGraphicsScene()
 {
+    init();
+}
+void GameMap::init()
+{
+    QPen linePen(Qt::red,1,Qt::SolidLine,Qt::RoundCap,Qt::RoundJoin);
+    for(int i = 0;i<4;i++)
+    {
+        _boundary.push_back(new QGraphicsLineItem());
+        _boundary.back()->setPen(linePen);
+        addItem(_boundary.back());
+    }
+    _boundary.at(0)->setLine(-0.5*mapWidth-1,-0.5*mapLength-1,0.5*mapWidth+1,-0.5*mapLength-1);
+    _boundary.at(1)->setLine(-0.5*mapWidth-1,0.5*mapLength+1,0.5*mapWidth+1,0.5*mapLength+1);
+    _boundary.at(2)->setLine(-0.5*mapWidth-1,-0.5*mapLength-1,-0.5*mapWidth-1,0.5*mapLength+1);
+    _boundary.at(3)->setLine(0.5*mapWidth+1,-0.5*mapLength-1,0.5*mapWidth+1,0.5*mapLength-1);
     setBackgroundBrush(Qt::black);
 }
-void GameMap::deleteLine(int y)
+void GameMap::clearBlock(QList<QGraphicsItem *> block)
 {
+    QRect rect(-0.5*mapWidth,-0.5*mapLength,mapWidth,block.at(0)->y()-blockWidth+0.5*mapLength);
+    foreach(QGraphicsItem* one,block)
+    {
+        removeItem(one);
+        delete one;
+        update(sceneRect());
+    }
+    QList<QGraphicsItem*> itemsDown = items(rect);
+    foreach(QGraphicsItem* item,itemsDown)
+    {
+        item->moveBy(0,blockWidth);
+    }
+}
 
+void GameMap::deleteLine(QPair<qreal, qreal> minMax)
+{
+    for(minMax.first;minMax.first < minMax.second + 1; minMax.first += blockWidth)
+    {
+        QRectF rect(-0.5*mapWidth,minMax.first-0.5*blockWidth,mapWidth,blockWidth);
+        qDebug()<<rect;
+        QList<QGraphicsItem*> oneLineBlock = items(rect);
+        if(oneLineBlock.size() == (mapWidth/blockWidth)-1)
+        {
+            clearBlock(oneLineBlock);
+        }
+    }
 }
 
 }

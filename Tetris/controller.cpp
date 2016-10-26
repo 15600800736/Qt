@@ -12,7 +12,7 @@ Controller::Controller(QObject *parent):
     QObject(parent),
      _map(new GameMap()),
     _view(new QGraphicsView(_map)),
-    _teris(new Teris(0,-0.5*mapLength+2*blockWidth,50,_map))
+    _teris(new Teris(0,-0.5*mapLength+2*blockWidth,15,_map))
 {
     _map->installEventFilter(this);
     _view->setScene(_map);
@@ -22,7 +22,7 @@ Controller::Controller(QObject *parent):
 
 void Controller::startGame()
 {
-    _timer.start(5);
+    _timer.start(1);
     connect(&_timer,SIGNAL(timeout()),_map,SLOT(advance()));
     qsrand((unsigned)time(0));
     int itype = qrand() % 7;

@@ -4,6 +4,8 @@
 #include <QGraphicsItemGroup>
 #include <QList>
 #include <QGraphicsColorizeEffect>
+#include <QTransform>
+#include <QPair>
 
 #include "constants.h"
 namespace Teris
@@ -45,16 +47,16 @@ public:
     void setAction(Action action);
     ~Teris();
 protected:
-    bool move();
-    bool fall();
+    void move();
+    void fall();
     void create();
     void advance(int phase);
-    void sendBlockToMap();
+    QPair<qreal,qreal> sendBlockToMap();
     bool isColliding();
+
 private:
 
     TerisType _type;
-
     QList<Block*> _block;
     QPointF _startPos;
     angle _currentAngle;

@@ -116,50 +116,51 @@ bool Teris::isColliding()
     foreach(QGraphicsItem* one,child)
     {
         QList<QGraphicsItem*> colliding = one->collidingItems();
-        if(colliding.size() > 1)
+        if(colliding.size() > 0 && !(colliding.size() == 1 && colliding.at(0) == this))
         {
             return true;
         }
-        return false;
     }
+    return false;
 }
 
-bool Teris::fall()
+void Teris::fall()
 {
     QPointF oldPos= this->pos();
-    moveBy(0,blockWidth);
-    QList<QGraphicsItem*> child = childItems();
-    foreach(QGraphicsItem* one,child)
+    moveBy(0,blockWidth/5);
+    if(isColliding())
     {
-        QList<QGraphicsItem*> colliding = one->collidingItems();
-        if(colliding.size() > 1)
-        {
-            setPos(oldPos);
-            _action = STOP;
-            update(_map->sceneRect());
-            return false;
-        }
+        setPos(oldPos);
+        _action = STOP;
+        update(_map->sceneRect());
+        return;
     }
-    return true;
 }
-bool Teris::move()
+void Teris::move()
 {
-    QPointF oldPos = pos();
     switch(_action)
     {
     case LEFT:
     {
         moveBy(-blockWidth,0);
+        if(isColliding())
+        {
+            moveBy(blockWidth,0);
+        }
         break;
     }
     case RIGHT:
     {
         moveBy(blockWidth,0);
+        if(isColliding())
+        {
+            moveBy(-blockWidth,0);
+        }
         break;
     }
     case DOWN:
     {
-        _counter = _speed -10;
+        _counter = _speed;
         break;
     }
     case TURN:
@@ -170,23 +171,16 @@ bool Teris::move()
             _currentAngle = 0;
         }
         setRotation(_currentAngle);
+        if(isColliding())
+        {
+                _currentAngle -= 90;
+                 setRotation(_currentAngle);
+        }
         break;
     }
     default:
         break;
     }
-    QList<QGraphicsItem*> child = childItems();
-    foreach(QGraphicsItem* one,child)
-    {
-        QList<QGraphicsItem*> colliding = one->collidingItems();
-        if(colliding.size() > 1)
-        {
-        setPos(oldPos);
-        update(_map->sceneRect());
-        return false;
-        }
-    }
-    return true;
 }
 void Teris::advance(int phase)
 {
@@ -201,22 +195,29 @@ void Teris::advance(int phase)
     }
     else
     {
-        sendBlockToMap();
+        QPair<qreal,qreal> minMax = sendBlockToMap();
         reset();
+        _map->deleteLine(minMax);
     }
 }
-void Teris::sendBlockToMap()
+QPair<qreal, qreal> Teris::sendBlockToMap()
 {
+    QPair<qreal,qreal> minMax;
+    minMax.first = _block.at(0)->scenePos().y();
+    minMax.first = _block.at(0)->scenePos().y();
     foreach(Block* block,_block)
     {
+        minMax.first = block->scenePos().y()< minMax.first ? block->scenePos().y() : minMax.first;
+        minMax.second = block->scenePos().y() > minMax.second ? block->scenePos().y() : minMax.second;
         Block *oldBlock = new Block(block->scenePos());
         _map->addItem(oldBlock);
     }
+    return minMax;
 }
 void Teris::reset()
 {
     setPos(_startPos);
-    resetTransform();
+    setRotation(0);
     qsrand((unsigned int)time(0));
     _action = FALL;
     int type = qrand() % 7;
@@ -247,6 +248,7 @@ void Teris::reset()
         break;
     }
     create();
+
 }
 void Teris::setType(TerisType type)
 {
