@@ -93,19 +93,6 @@ QRectF Teris::boundingRect()const
                   4*blockWidth,4*blockWidth);
      return rect;
 }
-QPainterPath Teris::shape()const
-{
-    QPainterPath path;
-    Block*block;
-    foreach(block,_block)
-    {
-        QPointF topLeft(block->x()-0.5*blockWidth,block->y() - 0.5*blockWidth);
-        QPointF bottomRight(block->x()+0.5*blockWidth,block->y() + 0.5*blockWidth);
-        path.addRect(QRectF(topLeft,bottomRight));
-    }
-    return path;
-
-}
 void Teris::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
 

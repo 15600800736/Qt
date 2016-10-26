@@ -43,7 +43,6 @@ public:
 
     Teris(qreal x,qreal y,int speed,GameMap* map,QObject* parent = 0);
     QRectF boundingRect()const;
-    QPainterPath shape()const;
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
     void reset(int type);
     void setType(TerisType type);
