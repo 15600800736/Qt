@@ -20,6 +20,7 @@ public:
     GameMap();
     void deleteLine(QPair<qreal,qreal> minMax);
     void clearBlock(QList<QGraphicsItem*> block);
+    void removeAll();
 protected:
     void init();
 private:

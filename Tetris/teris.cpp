@@ -12,7 +12,8 @@
 #include "time.h"
 namespace  Teris
 {
-Teris::Teris(qreal x, qreal y,int speed, GameMap* map):
+Teris::Teris(qreal x, qreal y, int speed, GameMap* map, QObject* parent):
+    QObject(parent),
     _startPos(x,y),
     _currentAngle(0),
     _speed(speed),
@@ -248,7 +249,10 @@ void Teris::reset()
         break;
     }
     create();
-
+    if(isColliding())
+    {
+        emit gameOver();
+    }
 }
 void Teris::setType(TerisType type)
 {
@@ -256,10 +260,6 @@ void Teris::setType(TerisType type)
 }
 Teris::~Teris()
 {
-    foreach(Block* block,_block)
-    {
-        delete block;
-    }
     _block.clear();
     delete _colorEffect;
 }

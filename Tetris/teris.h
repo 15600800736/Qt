@@ -1,6 +1,7 @@
 #ifndef Teris_H
 #define Teris_H
 
+#include <QObject>
 #include <QGraphicsItemGroup>
 #include <QList>
 #include <QGraphicsColorizeEffect>
@@ -13,8 +14,9 @@ namespace Teris
 class Controller;
 class Block;
 class GameMap;
-class Teris : public QGraphicsItemGroup
+class Teris :public QObject,public QGraphicsItemGroup
 {
+    Q_OBJECT
 public:
 
     typedef enum
@@ -38,7 +40,7 @@ public:
     }TerisType;
     typedef int angle;
 
-    Teris(qreal x,qreal y,int speed,GameMap* map);
+    Teris(qreal x,qreal y,int speed,GameMap* map,QObject* parent = 0);
     QRectF boundingRect()const;
     QPainterPath shape()const;
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
@@ -46,6 +48,8 @@ public:
     void setType(TerisType type);
     void setAction(Action action);
     ~Teris();
+signals:
+    void gameOver();
 protected:
     void move();
     void fall();
@@ -53,7 +57,6 @@ protected:
     void advance(int phase);
     QPair<qreal,qreal> sendBlockToMap();
     bool isColliding();
-
 private:
 
     TerisType _type;

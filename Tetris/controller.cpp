@@ -1,6 +1,7 @@
 
 //controller.cpp
 #include <QKeyEvent>
+#include <QMessageBox>
 
 #include "controller.h"
 #include "teris.h"
@@ -24,36 +25,7 @@ void Controller::startGame()
 {
     _timer.start(1);
     connect(&_timer,SIGNAL(timeout()),_map,SLOT(advance()));
-    qsrand((unsigned)time(0));
-    int itype = qrand() % 7;
-    Teris::TerisType type;
-    switch(itype)
-    {
-    case 0:
-        type = Teris::L;
-        break;
-    case 1:
-        type = Teris::RL;
-        break;
-    case 2:
-        type = Teris::Z;
-        break;
-    case 3:
-        type = Teris::RZ;
-        break;
-    case 4:
-        type = Teris::O;
-        break;
-    case 5:
-        type = Teris::I;
-        break;
-    case 6:
-        type = Teris::T;
-        break;
-    default:
-        break;
-    }
-    _teris->setType(type);
+    connect(_teris,SIGNAL(gameOver()),this,SLOT(gameOver()));
     _teris->reset();
     _map->addItem(_teris);
     _map->setBackgroundBrush(Qt::black);
@@ -91,7 +63,29 @@ bool Controller::eventFilter(QObject *watched, QEvent *event)
         return QObject::eventFilter(watched,event);
     }
 }
+void Controller::gameOver()
+{
+    disconnect(&_timer,SIGNAL(timeout()),_map,SLOT(advance()));
+    if(QMessageBox::question(_view,QString("Game Over"),QString("是否重新开始游戏？"),QMessageBox::Yes,QMessageBox::No) == QMessageBox::Yes)
+    {
+        _map->removeAll();
+        _teris = new Teris(0,-0.5*mapLength+2*blockWidth,15,_map);
+        _map->addItem(_teris);
+        connect(&_timer,SIGNAL(timeout()),_map,SLOT(advance()));
+    }
+    else
+    {
+        exit(0);
+    }
+}
+void Controller::pause()
+{
+    disconnect(&_timer,SIGNAL(timeout()),_map,SLOT(advance()));
+}
+void Controller::resume()
+{
 
+}
 Controller::~Controller()
 {
     delete _teris;

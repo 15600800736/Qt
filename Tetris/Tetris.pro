@@ -1,3 +1,4 @@
+
 #-------------------------------------------------
 #
 # Project created by QtCreator 2016-10-16T16:35:11
@@ -24,7 +25,8 @@ HEADERS  += mainwindow.h \
     controller.h \
     teris.h \
     block.h \
-    map.h
+    map.h \
+    button.h
 
 FORMS    += mainwindow.ui
 

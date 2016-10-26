@@ -16,8 +16,12 @@ class Controller:public QObject
 public:
     Controller(QObject* parent = 0);
     virtual ~Controller();
-    virtual void startGame();
     bool eventFilter(QObject *watched, QEvent *event);
+public slots:
+    void gameOver();
+    virtual void startGame();
+    void pause();
+    void resume();
 private:
     GameMap* _map;
     Teris* _teris;
