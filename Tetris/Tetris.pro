@@ -17,16 +17,14 @@ SOURCES += main.cpp\
     controller.cpp \
     teris.cpp \
     block.cpp \
-    map.cpp \
-    boundary.cpp
+    map.cpp
 
 HEADERS  += mainwindow.h \
     constants.h \
     controller.h \
     teris.h \
     block.h \
-    map.h \
-    boundary.h
+    map.h
 
 FORMS    += mainwindow.ui
 
