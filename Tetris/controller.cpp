@@ -3,6 +3,7 @@
 #include <QKeyEvent>
 #include <QMessageBox>
 
+#include "mainscene.h"
 #include "controller.h"
 #include "teris.h"
 #include "time.h"
@@ -11,18 +12,23 @@ namespace Teris
 {
 Controller::Controller(QObject *parent):
     QObject(parent),
+    _mainScene(new MainScene()),
      _map(new GameMap()),
     _view(new QGraphicsView(_map)),
     _teris(new Teris(0,-0.5*mapLength+2*blockWidth,15,_map))
 {
-    _map->installEventFilter(this);
-    _view->setScene(_map);
-    _view->resize(_map->sceneRect().width(),_map->sceneRect().height());
-    _view->show();
+    _view->setScene(_mainScene);
+    _view->resize(_mainScene->width(),_mainScene->height());
+
+
 }
 
 void Controller::startGame()
 {
+    _view->setScene(_map);
+    _view->resize(_map->width(),_map->height());
+    _view->show();
+    _map->installEventFilter(this);
     _timer.start(1);
     connect(&_timer,SIGNAL(timeout()),_map,SLOT(advance()));
     connect(_teris,SIGNAL(gameOver()),this,SLOT(gameOver()));
@@ -33,28 +39,31 @@ void Controller::startGame()
 }
 bool Controller::eventFilter(QObject *watched, QEvent *event)
 {
-    _map->update(_map->sceneRect());
-    if(event->type() == QEvent::KeyPress)
+    if(watched == _map)
     {
-        QKeyEvent* keyEvent = static_cast<QKeyEvent*>(event);
-        switch(keyEvent->key())
+        _map->update(_map->sceneRect());
+        if(event->type() == QEvent::KeyPress)
         {
-        case Qt::Key_Left:
-            _teris->setAction(Teris::LEFT);
-            break;
-        case Qt::Key_Right:
-            _teris->setAction(Teris::RIGHT);
-            break;
-        case Qt::Key_Up:
-            _teris->setAction(Teris::TURN);
-            break;
-        case Qt::Key_Down:
-            _teris->setAction(Teris::DOWN);
-            break;
-        default:
-            break;
+            QKeyEvent* keyEvent = static_cast<QKeyEvent*>(event);
+            switch(keyEvent->key())
+            {
+            case Qt::Key_Left:
+                _teris->setAction(Teris::LEFT);
+                break;
+            case Qt::Key_Right:
+                _teris->setAction(Teris::RIGHT);
+                break;
+            case Qt::Key_Up:
+                _teris->setAction(Teris::TURN);
+                break;
+            case Qt::Key_Down:
+                _teris->setAction(Teris::DOWN);
+                break;
+            default:
+                break;
+            }
+            return true;
         }
-        return true;
     }
     else
     {

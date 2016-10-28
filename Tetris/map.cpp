@@ -21,7 +21,7 @@ GameMap::GameMap():QGraphicsScene(),_nextTeris(new Teris(mapWidth,-0.2*mapLength
 }
 void GameMap::init()
 {
-    QPen linePen(Qt::red,1,Qt::SolidLine,Qt::RoundCap,Qt::RoundJoin);
+    QPen linePen(Qt::white,1,Qt::SolidLine,Qt::RoundCap,Qt::RoundJoin);
     for(int i = 0;i<4;i++)
     {
         _boundary.push_back(new QGraphicsLineItem());
@@ -106,6 +106,14 @@ void GameMap::createNextTeris(int type)
 }
 void GameMap::drawBackground(QPainter *painter, const QRectF &rect)
 {
+    painter->save();
     painter->drawPixmap(-mapWidth,-mapLength,6*mapWidth,6*3/4*mapWidth,QPixmap(":images/background"));
+    painter->restore();
+    painter->save();
+    painter->setPen(QPen(Qt::blue,10));
+    painter->drawRoundRect(-0.5*mapWidth-10,-0.5*mapLength-10,mapWidth+20,mapLength+20,10,10);
+    painter->setPen(QPen(Qt::white,5));
+    painter->drawRoundRect(-0.5*mapWidth-4,-0.5*mapLength-4,mapWidth+8,mapLength+8,10,10);
+    painter->restore();
 }
 }

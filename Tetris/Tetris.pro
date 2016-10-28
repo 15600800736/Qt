@@ -19,7 +19,8 @@ SOURCES += main.cpp\
     controller.cpp \
     teris.cpp \
     block.cpp \
-    map.cpp
+    map.cpp \
+    mainscene.cpp
 
 HEADERS  += mainwindow.h \
     constants.h \
@@ -27,7 +28,9 @@ HEADERS  += mainwindow.h \
     teris.h \
     block.h \
     map.h \
-    button.h
+    mainscene.h \
+    startbutton.h \
+    abstractbutton.h
 
 FORMS    += mainwindow.ui
 

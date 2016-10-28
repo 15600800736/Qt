@@ -10,6 +10,7 @@ namespace Teris
 {
 class Teris;
 class GameMap;
+class MainScene;
 class Controller:public QObject
 {
     Q_OBJECT
@@ -23,6 +24,7 @@ public slots:
     void pause();
     void resume();
 private:
+    MainScene* _mainScene;
     GameMap* _map;
     Teris* _teris;
     QGraphicsView* _view;
