@@ -1,5 +1,6 @@
 #ifndef STARTBUTTON_H
 #define STARTBUTTON_H
+#include <QLinearGradient>
 
 #include "mainscenebutton.h"
 
@@ -7,6 +8,7 @@ namespace Teris
 {
 class StartButton:public MainSceneButton
 {
+public:
    StartButton(qreal width, qreal height, qreal x, qreal y, Controller* controller);
    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
    void mousePressEvent(QGraphicsSceneMouseEvent* event);

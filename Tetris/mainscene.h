@@ -3,12 +3,17 @@
 
 #include <QGraphicsScene>
 
+#include "startbutton.h"
+
 namespace Teris
 {
+class Controller;
 class MainScene:public QGraphicsScene
 {
 public:
-    MainScene();
+    MainScene(Controller* controller);
+private:
+    MainSceneButton* _startButton;
 
 };
 }

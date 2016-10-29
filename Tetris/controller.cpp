@@ -12,19 +12,19 @@ namespace Teris
 {
 Controller::Controller(QObject *parent):
     QObject(parent),
-    _mainScene(new MainScene()),
+    _mainScene(new MainScene(this)),
      _map(new GameMap()),
     _view(new QGraphicsView(_map)),
     _teris(new Teris(0,-0.5*mapLength+2*blockWidth,15,_map))
 {
     _view->setScene(_mainScene);
     _view->resize(_mainScene->width(),_mainScene->height());
-
-
+    _view->show();
 }
 
 void Controller::startGame()
 {
+    _view->hide();
     _view->setScene(_map);
     _view->resize(_map->width(),_map->height());
     _view->show();

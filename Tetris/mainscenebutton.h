@@ -3,6 +3,7 @@
 
 #include <QGraphicsItem>
 #include <QGraphicsOpacityEffect>
+#include <QGraphicsDropShadowEffect>
 
 namespace Teris
 {
@@ -19,10 +20,11 @@ public:
     virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
     QString getCaption()const;
     void setCaption(QString caption);
-private:
+protected:
     qreal _width;
     qreal _height;
     QString _caption;
+    QGraphicsDropShadowEffect* _shadow;
     QGraphicsOpacityEffect* _opacity;
     Controller* _controller;
 };

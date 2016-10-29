@@ -13,9 +13,12 @@ MainSceneButton::MainSceneButton(QString caption, qreal width, qreal height, qre
     _height = height;
     _caption = caption;
     _controller = controller;
+    _shadow = new QGraphicsDropShadowEffect();
+    _shadow->setBlurRadius(0);
+    _shadow->setOffset(0,0);
     _opacity = new QGraphicsOpacityEffect();
-    _opacity->setOpacity(0.5);
-    setGraphicsEffect(_opacity);
+    _opacity->setOpacity(0.2);
+    setGraphicsEffect(_shadow);
     setAcceptHoverEvents(true);
 }
 QRectF MainSceneButton::boundingRect()const
@@ -34,16 +37,18 @@ QString MainSceneButton::getCaption()const
 {
     return _caption;
 }
-void MainSceneButton::setCaption(QString caption)const
+void MainSceneButton::setCaption(QString caption)
 {
     _caption = caption;
 }
 void MainSceneButton::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
 {
-    _opacity->setOpacity(1);
+    _shadow->setBlurRadius(10);
+    _shadow->setOffset(7,4);
 }
 void MainSceneButton::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
 {
-    _opacity->setOpacity(0.5);
+    _shadow->setBlurRadius(0);
+    _shadow->setOffset(0,0);
 }
 }
