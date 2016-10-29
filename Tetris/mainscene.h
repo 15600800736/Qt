@@ -5,12 +5,11 @@
 
 namespace Teris
 {
-class MainScene:public QObject,public QGraphicsScene
+class MainScene:public QGraphicsScene
 {
-    Q_OBJECT
 public:
-    MainScene(QObject* parent = 0);
-    void drawBackground(QPainter *painter, const QRectF &rect);
+    MainScene();
+
 };
 }
 #endif // MAINSCENE_H

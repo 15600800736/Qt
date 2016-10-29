@@ -1,5 +1,6 @@
 
 
+
 #-------------------------------------------------
 #
 # Project created by QtCreator 2016-10-16T16:35:11
@@ -20,7 +21,9 @@ SOURCES += main.cpp\
     teris.cpp \
     block.cpp \
     map.cpp \
-    mainscene.cpp
+    mainscene.cpp \
+    mainscenebutton.cpp \
+    startbutton.cpp
 
 HEADERS  += mainwindow.h \
     constants.h \
@@ -29,8 +32,8 @@ HEADERS  += mainwindow.h \
     block.h \
     map.h \
     mainscene.h \
-    startbutton.h \
-    abstractbutton.h
+    mainscenebutton.h \
+    startbutton.h
 
 FORMS    += mainwindow.ui
 

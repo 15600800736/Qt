@@ -3,7 +3,7 @@
 
 namespace Teris
 {
-MainScene::MainScene(QObject* parent):QObject(parent)
+MainScene::MainScene()
 {
 }
 }
