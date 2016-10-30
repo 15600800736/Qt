@@ -12,6 +12,7 @@ class MainSceneButton:public QGraphicsItem
 {
 public:
     MainSceneButton(QString caption,qreal width,qreal height,qreal x,qreal y,Controller* controller);
+    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
     void hoverEnterEvent(QGraphicsSceneHoverEvent *event);
     void hoverLeaveEvent(QGraphicsSceneHoverEvent *event);
     virtual void mousePressEvent(QGraphicsSceneMouseEvent *event) = 0;

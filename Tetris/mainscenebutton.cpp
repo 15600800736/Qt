@@ -26,6 +26,19 @@ QRectF MainSceneButton::boundingRect()const
     QRectF rect(-0.5*_width,-0.5*_height,_width,_height);
     return rect;
 }
+void MainSceneButton::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
+{
+    painter->save();
+    QLinearGradient line;
+    line.setStart(boundingRect().topLeft());
+    line.setFinalStop(boundingRect().bottomRight());
+    line.setColorAt(0,Qt::white);
+    line.setColorAt(0.8,Qt::blue);
+    line.setColorAt(1,Qt::black);
+    painter->setBrush(QBrush(line));
+    painter->drawRoundRect(boundingRect(),20,20);
+    painter->restore();
+}
 QString MainSceneButton::getCaption()const
 {
     return _caption;

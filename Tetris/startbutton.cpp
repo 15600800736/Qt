@@ -12,19 +12,7 @@ StartButton::StartButton(qreal width, qreal height, qreal x, qreal y, Controller
 {
 
 }
-void StartButton::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
-{
-    painter->save();
-    QLinearGradient line;
-    line.setStart(boundingRect().topLeft());
-    line.setFinalStop(boundingRect().bottomRight());
-    line.setColorAt(0,Qt::white);
-    line.setColorAt(0.8,Qt::blue);
-    line.setColorAt(1,Qt::black);
-    painter->setBrush(QBrush(line));
-    painter->drawRoundRect(boundingRect(),20,20);
-    painter->restore();
-}
+
 void StartButton::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
 
