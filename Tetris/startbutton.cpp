@@ -22,7 +22,7 @@ void StartButton::paint(QPainter *painter, const QStyleOptionGraphicsItem *optio
     line.setColorAt(0.8,Qt::blue);
     line.setColorAt(1,Qt::black);
     painter->setBrush(QBrush(line));
-    painter->drawRoundRect(boundingRect(),10,10);
+    painter->drawRoundRect(boundingRect(),20,20);
     painter->restore();
 }
 void StartButton::mousePressEvent(QGraphicsSceneMouseEvent *event)

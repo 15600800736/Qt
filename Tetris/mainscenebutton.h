@@ -17,7 +17,6 @@ public:
     virtual void mousePressEvent(QGraphicsSceneMouseEvent *event) = 0;
     virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent *event) = 0;
     QRectF boundingRect()const;
-    virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
     QString getCaption()const;
     void setCaption(QString caption);
 protected:
