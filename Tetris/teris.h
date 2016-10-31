@@ -48,6 +48,7 @@ public:
     void setType(TerisType type);
     void setAction(Action action);
     void create();
+    void resetPos();
     ~Teris();
 signals:
     void gameOver();

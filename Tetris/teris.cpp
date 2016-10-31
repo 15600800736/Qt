@@ -188,8 +188,9 @@ void Teris::advance(int phase)
         else
         {
             QPair<qreal,qreal> minMax = sendBlockToMap();
+            setPos(_startPos);
              _map->deleteLine(minMax);
-            reset(_nextType);
+             reset(_nextType);
         }
     }
 }
@@ -207,9 +208,13 @@ QPair<qreal, qreal> Teris::sendBlockToMap()
     }
     return minMax;
 }
-void Teris::reset(int type)
+void Teris::resetPos()
 {
     setPos(_startPos);
+}
+
+void Teris::reset(int type)
+{
     setRotation(0);
     qsrand((unsigned int)time(0));
     _action = FALL;
