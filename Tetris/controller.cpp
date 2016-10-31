@@ -79,6 +79,7 @@ void Controller::gameOver()
         _teris = new Teris(0,-0.5*mapLength+2*blockWidth,15,_map,this);
         _teris->reset(qrand()%7);
         _map->addItem(_teris);
+        connect(_teris,SIGNAL(gameOver()),this,SLOT(gameOver()));
     }
     else
     {
