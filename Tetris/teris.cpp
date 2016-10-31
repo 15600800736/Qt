@@ -10,16 +10,19 @@
 #include "map.h"
 #include "teris.h"
 #include "time.h"
+#include "controller.h"
 namespace  Teris
 {
 Teris::Teris(qreal x, qreal y, int speed, GameMap* map, QObject* parent):
     QObject(parent),
+    _over(false),
     _startPos(x,y),
     _currentAngle(0),
     _speed(speed),
     _counter(0),
     _colorEffect(new QGraphicsColorizeEffect()),
-    _map(map)
+    _map(map),
+    _action(FALL)
 {
     for(int i = 0;i<4;i++)
     {
@@ -171,7 +174,7 @@ void Teris::move()
 }
 void Teris::advance(int phase)
 {
-    if(_action != NEXT)
+    if(_action != NEXT && !_over)
     {
         if(!phase)return;
         if(++_counter < _speed)return;
@@ -185,8 +188,8 @@ void Teris::advance(int phase)
         else
         {
             QPair<qreal,qreal> minMax = sendBlockToMap();
+             _map->deleteLine(minMax);
             reset(_nextType);
-            _map->deleteLine(minMax);
         }
     }
 }
@@ -194,7 +197,7 @@ QPair<qreal, qreal> Teris::sendBlockToMap()
 {
     QPair<qreal,qreal> minMax;
     minMax.first = _block.at(0)->scenePos().y();
-    minMax.first = _block.at(0)->scenePos().y();
+    minMax.second = _block.at(0)->scenePos().y();
     foreach(Block* block,_block)
     {
         minMax.first = block->scenePos().y()< minMax.first ? block->scenePos().y() : minMax.first;
@@ -241,6 +244,7 @@ void Teris::reset(int type)
      _map->createNextTeris(_nextType);
     if(isColliding())
     {
+        _over = true;
         emit gameOver();
     }
 }

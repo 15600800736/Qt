@@ -9,6 +9,8 @@
 #include <QGraphicsLineItem>
 #include <QList>
 #include <QPair>
+#include <QGraphicsOpacityEffect>
+#include <QPropertyAnimation>
 
 #include "constants.h"
 namespace Teris

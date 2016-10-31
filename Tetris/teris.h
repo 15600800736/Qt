@@ -59,6 +59,7 @@ protected:
     bool isColliding();
 private:
 
+    bool _over;
     TerisType _type;
     QList<Block*> _block;
     QPointF _startPos;

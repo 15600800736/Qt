@@ -12,7 +12,9 @@
 #include "teris.h"
 namespace Teris
 {
-GameMap::GameMap():QGraphicsScene(),_nextTeris(new Teris(mapWidth,-0.2*mapLength,0,this))
+GameMap::GameMap():
+    QGraphicsScene(),
+    _nextTeris(new Teris(mapWidth,-0.2*mapLength,0,this))
 {
     _nextTeris->setAction(Teris::NEXT);
     init();

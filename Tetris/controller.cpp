@@ -15,11 +15,12 @@ Controller::Controller(QObject *parent):
     _mainScene(new MainScene(this)),
      _map(new GameMap()),
     _view(new QGraphicsView(_map)),
-    _teris(new Teris(0,-0.5*mapLength+2*blockWidth,15,_map))
+    _teris(new Teris(0,-0.5*mapLength+2*blockWidth,15,_map,this)),
+    _timer(new QTimer())
 {
-    _view->setScene(_mainScene);
-    _view->resize(_mainScene->width(),_mainScene->height());
-    _view->show();
+//    _view->setScene(_mainScene);
+//    _view->resize(_mainScene->width(),_mainScene->height());
+//    _view->show();
 }
 
 void Controller::startGame()
@@ -29,8 +30,8 @@ void Controller::startGame()
     _view->resize(_map->width(),_map->height());
     _view->show();
     _map->installEventFilter(this);
-    _timer.start(1);
-    connect(&_timer,SIGNAL(timeout()),_map,SLOT(advance()));
+    _timer->start(1);
+    connect(_timer,SIGNAL(timeout()),_map,SLOT(advance()));
     connect(_teris,SIGNAL(gameOver()),this,SLOT(gameOver()));
     qsrand((unsigned int)time(0));
     _teris->reset(qrand()&7);
@@ -72,13 +73,12 @@ bool Controller::eventFilter(QObject *watched, QEvent *event)
 }
 void Controller::gameOver()
 {
-    disconnect(&_timer,SIGNAL(timeout()),_map,SLOT(advance()));
     if(QMessageBox::question(_view,QString("Game Over"),QString("是否重新开始游戏？"),QMessageBox::Yes,QMessageBox::No) == QMessageBox::Yes)
     {
         _map->removeAll();
-        _teris = new Teris(0,-0.5*mapLength+2*blockWidth,15,_map);
+        _teris = new Teris(0,-0.5*mapLength+2*blockWidth,15,_map,this);
+        _teris->reset(qrand()%7);
         _map->addItem(_teris);
-        connect(&_timer,SIGNAL(timeout()),_map,SLOT(advance()));
     }
     else
     {
@@ -87,7 +87,7 @@ void Controller::gameOver()
 }
 void Controller::pause()
 {
-    disconnect(&_timer,SIGNAL(timeout()),_map,SLOT(advance()));
+    disconnect(_timer,SIGNAL(timeout()),_map,SLOT(advance()));
 }
 void Controller::resume()
 {
