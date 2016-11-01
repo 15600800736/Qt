@@ -27,8 +27,8 @@ protected:
     QString _caption;
     QGraphicsDropShadowEffect* _shadow;
     Controller* _controller;
-    QFont* _font;
-    QPainterPath* _path;
+//    QFont* _font;
+//    QPainterPath* _path;
 };
 }
 #endif // MAINSCENEBUTTON_H

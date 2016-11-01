@@ -12,6 +12,7 @@ class MainScene:public QGraphicsScene
 {
 public:
     MainScene(Controller* controller);
+    void drawBackground(QPainter *painter, const QRectF &rect);
 private:
     MainSceneButton* _startButton;
 
