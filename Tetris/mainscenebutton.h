@@ -17,16 +17,18 @@ public:
     void hoverLeaveEvent(QGraphicsSceneHoverEvent *event);
     virtual void mousePressEvent(QGraphicsSceneMouseEvent *event) = 0;
     virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent *event) = 0;
-    QRectF boundingRect()const;
+    virtual QRectF boundingRect()const = 0;
     QString getCaption()const;
     void setCaption(QString caption);
+    ~MainSceneButton();
 protected:
     qreal _width;
     qreal _height;
     QString _caption;
     QGraphicsDropShadowEffect* _shadow;
-    QGraphicsOpacityEffect* _opacity;
     Controller* _controller;
+    QFont* _font;
+    QPainterPath* _path;
 };
 }
 #endif // MAINSCENEBUTTON_H

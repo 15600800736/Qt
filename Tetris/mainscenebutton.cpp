@@ -6,20 +6,24 @@
 #include "controller.h"
 namespace Teris
 {
-MainSceneButton::MainSceneButton(QString caption, qreal width, qreal height, qreal x, qreal y, Controller* controller)
+MainSceneButton::MainSceneButton(QString caption, qreal width, qreal height, qreal x, qreal y, Controller* controller):
+    _width(width),
+    _height(height),
+    _caption(caption),
+    _shadow(new QGraphicsDropShadowEffect()),
+    _controller(controller),
+    _font(new QFont()),
+    _path(new QPainterPath())
 {
     setPos(x,y);
-    _width = width;
-    _height = height;
-    _caption = caption;
-    _controller = controller;
-    _shadow = new QGraphicsDropShadowEffect();
     _shadow->setBlurRadius(0);
     _shadow->setOffset(0,0);
-    _opacity = new QGraphicsOpacityEffect();
-    _opacity->setOpacity(0.2);
     setGraphicsEffect(_shadow);
     setAcceptHoverEvents(true);
+    _font->setItalic(true);
+    _font->setBold(true);
+    _font->setPointSize(20);
+    _path->addText(0.5*boundingRect().left(),0.4*boundingRect().bottom(),*_font,_caption);
 }
 QRectF MainSceneButton::boundingRect()const
 {
@@ -37,6 +41,8 @@ void MainSceneButton::paint(QPainter *painter, const QStyleOptionGraphicsItem *o
     line.setColorAt(1,Qt::black);
     painter->setBrush(QBrush(line));
     painter->drawRoundRect(boundingRect(),20,20);
+    painter->strokePath(*_path,QPen(Qt::black));
+    painter->fillPath(*_path,Qt::yellow);
     painter->restore();
 }
 QString MainSceneButton::getCaption()const
@@ -59,5 +65,10 @@ void MainSceneButton::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
     _shadow->setBlurRadius(0);
     _shadow->setOffset(0,0);
 
+}
+MainSceneButton::~MainSceneButton()
+{
+    delete _font;
+    delete _path;
 }
 }

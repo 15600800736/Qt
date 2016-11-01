@@ -10,6 +10,7 @@ class StartButton:public MainSceneButton
 {
 public:
    StartButton(qreal width, qreal height, qreal x, qreal y, Controller* controller);
+   QRectF boundingRect() const;
    void mousePressEvent(QGraphicsSceneMouseEvent* event);
    void mouseReleaseEvent(QGraphicsSceneMouseEvent* event);
 };

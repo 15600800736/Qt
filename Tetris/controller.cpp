@@ -15,7 +15,7 @@ Controller::Controller(QObject *parent):
     QObject(parent),
     _mainScene(new MainScene(this)),
      _map(new GameMap()),
-    _view(new QGraphicsView(_map)),
+    _view(new QGraphicsView(_mainScene)),
     _teris(new Teris(0,-0.5*mapLength+2*blockWidth,15,_map,this)),
     _timer(new QTimer())
 {
@@ -26,8 +26,8 @@ Controller::Controller(QObject *parent):
 
 void Controller::startGame()
 {
-    _view->hide();
-    _view->setScene(_map);
+    delete _view;
+    _view = new QGraphicsView(_map);
     _view->resize(_map->width(),_map->height());
     _view->show();
     _map->installEventFilter(this);
@@ -38,7 +38,6 @@ void Controller::startGame()
     _teris->resetPos();
     _teris->reset(qrand()&7);
     _map->addItem(_teris);
-    _map->setBackgroundBrush(Qt::black);
 }
 bool Controller::eventFilter(QObject *watched, QEvent *event)
 {
@@ -99,7 +98,6 @@ void Controller::resume()
 Controller::~Controller()
 {
     delete _teris;
-    delete _view;
     delete _map;
 }
 }

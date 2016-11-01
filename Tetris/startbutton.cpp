@@ -12,7 +12,11 @@ StartButton::StartButton(qreal width, qreal height, qreal x, qreal y, Controller
 {
 
 }
-
+QRectF StartButton::boundingRect()const
+{
+    QRectF rect(-0.5*_width,-0.5*_height,_width,_height);
+    return rect;
+}
 void StartButton::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
 
