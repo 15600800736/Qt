@@ -122,7 +122,6 @@ void Teris::fall()
     {
         setPos(oldPos);
         _action = STOP;
-        update(_map->sceneRect());
         return;
     }
 }
