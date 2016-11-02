@@ -15,9 +15,9 @@ Controller::Controller(QObject *parent):
     QObject(parent),
     _mainScene(new MainScene(this)),
      _map(new GameMap()),
-    _view(new QGraphicsView(_mainScene)),
     _teris(new Teris(0,-0.5*mapLength+2*blockWidth,15,_map,this)),
-    _timer(new QTimer())
+    _timer(new QTimer()),
+    _view(new QGraphicsView(_mainScene))
 {
     _view->setScene(_mainScene);
     _view->resize(_mainScene->width(),_mainScene->height());
@@ -26,9 +26,10 @@ Controller::Controller(QObject *parent):
 
 void Controller::startGame()
 {
-    delete _view;
-    _view = new QGraphicsView(_map);
+    _view->hide();
+    _view->setScene(_map);
     _view->resize(_map->width(),_map->height());
+    _view->setGeometry(-100,100,100+7*mapWidth,100+7*3/4*mapWidth);
     _view->show();
     _map->installEventFilter(this);
     _timer->start(1);

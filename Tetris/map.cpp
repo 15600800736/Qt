@@ -109,7 +109,15 @@ void GameMap::createNextTeris(int type)
 void GameMap::drawBackground(QPainter *painter, const QRectF &rect)
 {
     painter->save();
-    painter->drawPixmap(-mapWidth,-mapLength,6*mapWidth,6*3/4*mapWidth,QPixmap(":images/background"));
+    QPixmap px(":images/background");
+    if(!px.isNull())
+    {
+        painter->drawPixmap(-mapWidth,-mapLength,6*mapWidth,6*3/4*mapWidth,px);
+    }
+    else
+    {
+        qDebug() <<"can't find picture";
+    }
     painter->restore();
     painter->save();
     painter->setPen(QPen(Qt::blue,10));
