@@ -11,19 +11,17 @@ MainSceneButton::MainSceneButton(QString caption, qreal width, qreal height, qre
     _height(height),
     _caption(caption),
     _shadow(new QGraphicsDropShadowEffect()),
-    _controller(controller)/*,
-    _font(new QFont()),
-    _path(new QPainterPath())*/
+    _controller(controller)
 {
     setPos(x,y);
     _shadow->setBlurRadius(0);
     _shadow->setOffset(0,0);
     setGraphicsEffect(_shadow);
     setAcceptHoverEvents(true);
-//    _font->setItalic(true);
-//    _font->setBold(true);
-//    _font->setPointSize(20);
-//    _path->addText(0.5*boundingRect().left(),0.4*boundingRect().bottom(),*_font,_caption);
+    _font.setItalic(true);
+    _font.setBold(true);
+    _font.setPointSize(20);
+    _path.addText(0.5*boundingRect().left(),0.4*boundingRect().bottom(),_font,_caption);
 }
 QRectF MainSceneButton::boundingRect()const
 {
@@ -41,8 +39,8 @@ void MainSceneButton::paint(QPainter *painter, const QStyleOptionGraphicsItem *o
     line.setColorAt(1,Qt::black);
     painter->setBrush(QBrush(line));
     painter->drawRoundRect(boundingRect(),20,20);
-//    painter->strokePath(*_path,QPen(Qt::black));
-//    painter->fillPath(*_path,Qt::yellow);
+    painter->strokePath(_path,QPen(Qt::black));
+    painter->fillPath(_path,Qt::yellow);
     painter->restore();
 }
 QString MainSceneButton::getCaption()const

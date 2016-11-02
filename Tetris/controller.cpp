@@ -29,7 +29,7 @@ void Controller::startGame()
     _view->hide();
     _view->setScene(_map);
     _view->resize(_map->width(),_map->height());
-    _view->setGeometry(-100,100,100+7*mapWidth,100+7*3/4*mapWidth);
+    _view->setGeometry(75,75,5*mapWidth,3*mapWidth);
     _view->show();
     _map->installEventFilter(this);
     _timer->start(1);

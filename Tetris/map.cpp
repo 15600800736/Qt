@@ -18,7 +18,7 @@ GameMap::GameMap():
 {
     _nextTeris->setAction(Teris::NEXT);
     init();
-    setSceneRect(-mapWidth,-mapLength,6*mapWidth,6*3/4*mapWidth);
+    setSceneRect(-mapWidth,-mapLength,5*mapWidth,3*mapWidth);
     addItem(_nextTeris);
 }
 void GameMap::init()
@@ -112,7 +112,7 @@ void GameMap::drawBackground(QPainter *painter, const QRectF &rect)
     QPixmap px(":images/background");
     if(!px.isNull())
     {
-        painter->drawPixmap(-mapWidth,-mapLength,6*mapWidth,6*3/4*mapWidth,px);
+        painter->drawPixmap(-mapWidth,-mapLength,5*mapWidth,3*mapWidth,px);
     }
     else
     {
