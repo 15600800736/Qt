@@ -14,12 +14,20 @@ namespace Teris
 {
 GameMap::GameMap():
     QGraphicsScene(),
-    _nextTeris(new Teris(mapWidth,-0.2*mapLength,0,this))
+    _nextTeris(new Teris(mapWidth,-0.2*mapLength,0,this)),
+    _scoreText(new QGraphicsTextItem()),
+    _score(0)
 {
     _nextTeris->setAction(Teris::NEXT);
+    updateScore(0);
+    _scoreText->setPos(0.6*mapWidth,0.2*mapLength);
+    QFont scoreTextFont;
+    scoreTextFont.setPixelSize(20);
+    _scoreText->setFont(scoreTextFont);
+    _scoreText->setDefaultTextColor(Qt::white);
     setSceneRect(-mapWidth,-mapLength,5*mapWidth,3*mapWidth);
     addItem(_nextTeris);
-
+    addItem(_scoreText);
     init();
 
 }
@@ -55,6 +63,7 @@ void GameMap::clearBlock(QList<QGraphicsItem *> block)
 
 void GameMap::deleteLine(QPair<qreal, qreal> minMax)
 {
+    int score = 0;
     for(minMax.first;minMax.first < minMax.second + 1; minMax.first += blockWidth)
     {
         QRectF rect(-0.5*mapWidth,minMax.first-0.5*blockWidth,mapWidth,blockWidth);
@@ -62,8 +71,10 @@ void GameMap::deleteLine(QPair<qreal, qreal> minMax)
         if(oneLineBlock.size() == (mapWidth/blockWidth)-1)
         {
             clearBlock(oneLineBlock);
+            score++;
         }
     }
+    updateScore(score);
 }
 void GameMap::removeAll()
 {
@@ -74,6 +85,7 @@ void GameMap::removeAll()
         removeItem(one);
         delete one;
     }
+    _scoreText->setPlainText(QString("0"));
 }
 void GameMap::createNextTeris(int type)
 {
@@ -120,5 +132,11 @@ void GameMap::drawBackground(QPainter *painter, const QRectF &rect)
         qDebug() <<"can't find picture";
     }
     painter->restore();
+}
+void GameMap::updateScore(int value)
+{
+    _score += value;
+    QString score = QString("Your score is :%1").arg(_score);
+    _scoreText->setPlainText(score);
 }
 }

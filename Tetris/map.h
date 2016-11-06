@@ -25,12 +25,14 @@ public:
     void removeAll();
     void createNextTeris(int type);
     void drawBackground(QPainter *painter, const QRectF &rect);
+    void updateScore(int value);
 protected:
     void init();
 private:
     QList<QGraphicsLineItem*> _boundary;
     Teris* _nextTeris;
-    QGraphicsTextItem* _score;
+    QGraphicsTextItem* _scoreText;
+    int _score;
 };
 }
 #endif // MAP_H
