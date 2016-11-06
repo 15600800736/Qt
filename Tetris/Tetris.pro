@@ -16,7 +16,6 @@ TEMPLATE = app
 
 
 SOURCES += main.cpp\
-        mainwindow.cpp \
     controller.cpp \
     teris.cpp \
     block.cpp \
@@ -25,7 +24,7 @@ SOURCES += main.cpp\
     mainscenebutton.cpp \
     startbutton.cpp
 
-HEADERS  += mainwindow.h \
+HEADERS  += \
     constants.h \
     controller.h \
     teris.h \
