@@ -78,7 +78,7 @@ void Controller::gameOver()
     if(QMessageBox::question(_view,QString("Game Over"),QString("是否重新开始游戏？"),QMessageBox::Yes,QMessageBox::No) == QMessageBox::Yes)
     {
         _map->removeAll();
-        _teris = new Teris(0,-0.5*mapLength+2*blockWidth,15,_map,this);
+        _teris = new Teris(0,-0.5*mapLength+2*blockWidth,50,_map,this);
         _teris->reset(qrand()%7);
         _map->addItem(_teris);
         connect(_teris,SIGNAL(gameOver()),this,SLOT(gameOver()));

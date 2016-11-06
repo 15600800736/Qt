@@ -30,6 +30,7 @@ protected:
 private:
     QList<QGraphicsLineItem*> _boundary;
     Teris* _nextTeris;
+    QGraphicsTextItem* _score;
 };
 }
 #endif // MAP_H

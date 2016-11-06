@@ -17,9 +17,11 @@ GameMap::GameMap():
     _nextTeris(new Teris(mapWidth,-0.2*mapLength,0,this))
 {
     _nextTeris->setAction(Teris::NEXT);
-    init();
     setSceneRect(-mapWidth,-mapLength,5*mapWidth,3*mapWidth);
     addItem(_nextTeris);
+
+    init();
+
 }
 void GameMap::init()
 {

@@ -117,7 +117,7 @@ bool Teris::isColliding()
 void Teris::fall()
 {
     QPointF oldPos= this->pos();
-    moveBy(0,blockWidth/4);
+    moveBy(0,blockWidth/2);
     if(isColliding())
     {
         setPos(oldPos);
