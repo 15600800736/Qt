@@ -43,7 +43,6 @@ void GameMap::clearBlock(QList<QGraphicsItem *> block)
     {
         removeItem(one);
         delete one;
-        update(sceneRect());
     }
     QList<QGraphicsItem*> itemsDown = items(rect);
     foreach(QGraphicsItem* item,itemsDown)
@@ -118,12 +117,6 @@ void GameMap::drawBackground(QPainter *painter, const QRectF &rect)
     {
         qDebug() <<"can't find picture";
     }
-    painter->restore();
-    painter->save();
-    painter->setPen(QPen(Qt::blue,10));
-    painter->drawRoundRect(-0.5*mapWidth-10,-0.5*mapLength-10,mapWidth+20,mapLength+20,10,10);
-    painter->setPen(QPen(Qt::white,5));
-    painter->drawRoundRect(-0.5*mapWidth-4,-0.5*mapLength-4,mapWidth+8,mapLength+8,10,10);
     painter->restore();
 }
 }

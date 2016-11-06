@@ -47,6 +47,7 @@ public:
     void reset(int type);
     void setType(TerisType type);
     void setAction(Action action);
+    Action getAction()const;
     void create();
     void resetPos();
     ~Teris();

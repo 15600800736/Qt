@@ -15,7 +15,7 @@ Controller::Controller(QObject *parent):
     QObject(parent),
     _mainScene(new MainScene(this)),
      _map(new GameMap()),
-    _teris(new Teris(0,-0.5*mapLength+2*blockWidth,15,_map,this)),
+    _teris(new Teris(0,-0.5*mapLength+2*blockWidth,50,_map,this)),
     _timer(new QTimer()),
     _view(new QGraphicsView(_mainScene))
 {
@@ -28,7 +28,7 @@ void Controller::startGame()
 {
     _view->hide();
     _view->setScene(_map);
-    _view->resize(_map->width(),_map->height());
+    _view->resize(_map->width(),1.3*_map->height());
     _view->setGeometry(75,75,5*mapWidth,3*mapWidth);
     _view->show();
     _map->installEventFilter(this);
@@ -44,7 +44,7 @@ bool Controller::eventFilter(QObject *watched, QEvent *event)
 {
     if(watched == _map)
     {
-        _map->update(_map->sceneRect());
+        _teris->update(_teris->boundingRect());
         if(event->type() == QEvent::KeyPress)
         {
             QKeyEvent* keyEvent = static_cast<QKeyEvent*>(event);

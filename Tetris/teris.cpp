@@ -92,7 +92,7 @@ void Teris::create()
 }
 QRectF Teris::boundingRect()const
 {
-    QRectF rect(-2*blockWidth,2*blockWidth,
+    QRectF rect(-2*blockWidth,-2*blockWidth,
                   4*blockWidth,4*blockWidth);
      return rect;
 }
@@ -117,7 +117,7 @@ bool Teris::isColliding()
 void Teris::fall()
 {
     QPointF oldPos= this->pos();
-    moveBy(0,blockWidth/5);
+    moveBy(0,blockWidth/4);
     if(isColliding())
     {
         setPos(oldPos);
@@ -264,6 +264,10 @@ Teris::~Teris()
 void Teris::setAction(Action action)
 {
     _action = action;
+}
+Teris::Action Teris::getAction()const
+{
+    return _action;
 }
 }
 
